@@ -1,0 +1,23 @@
+<html>
+<body>
+<script src="../mars.js"></script>
+<script>
+
+let x = 100
+let y = 0
+
+mars.draw = function () {
+  mars.ctx.fillRect(x, y, 10, 10)
+}
+
+mars.update = function () {
+  if (mars.keys['right arrow']) {
+    x += 10
+  } else if (mars.keys['left arrow']) {
+    x -= 10
+  }
+}
+
+</script>
+</body>
+</html>

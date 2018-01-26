@@ -1,0 +1,75 @@
+<html>
+<body>
+<script src="../mars.js"></script>
+<script>
+
+const PLAYER_SIZE = 10
+const RAIN_SIZE = 15
+const RAIN_FREQUENCY = 100
+const RAIN_SPEED = 10
+const PLAYER_SPEED = 10
+const SCREEN_SIZE = 400
+const DEFAULT_PLAYER_COORDS = [SCREEN_SIZE / 2, SCREEN_SIZE - 60]
+const CURRENT_SCORE_COORDS = [10, SCREEN_SIZE - 20]
+const HIGH_SCORE_COORDS = [10, SCREEN_SIZE - 10]
+
+let highestScore = 0
+let iteration = 0
+let playerCoords, rain
+reset()
+
+function reset () {
+  if (iteration > highestScore) {
+    highestScore = iteration
+  }
+
+  playerCoords = DEFAULT_PLAYER_COORDS.slice()
+  rain = []
+  iteration = 0
+}
+
+mars.update = function () {
+  if (iteration % RAIN_FREQUENCY == 0) {
+    rain.push([mars.randRange(-RAIN_SIZE + 1, SCREEN_SIZE - 1), 0])
+  }
+
+  for (let i = 0; i < rain.length; i++) {
+    rain[i][1] = rain[i][1] + RAIN_SPEED
+
+    if (mars.collided(
+      rain[i], [RAIN_SIZE, RAIN_SIZE],
+      playerCoords, [PLAYER_SIZE, PLAYER_SIZE]
+    )) {
+      reset()
+    }
+  }
+
+  rain = rain.filter(val => val[1] < DEFAULT_PLAYER_COORDS[1] + PLAYER_SIZE)
+
+  if (mars.keys['a']) {
+    playerCoords[0] -= PLAYER_SPEED
+  } else if (mars.keys['d']) {
+    playerCoords[0] += PLAYER_SPEED
+  }
+
+  if (playerCoords[0] < 0) playerCoords[0] = 0
+  else if (playerCoords[0] >= SCREEN_SIZE) playerCoords[0] = SCREEN_SIZE - 1
+
+  iteration = iteration + 1
+}
+
+mars.draw = function () {
+  mars.ctx.fillRect(playerCoords[0], playerCoords[1], PLAYER_SIZE, PLAYER_SIZE)
+
+  for (let v of rain) {
+    mars.ctx.fillRect(v[0], v[1], RAIN_SIZE, RAIN_SIZE)
+  }
+
+  mars.ctx.fillText(iteration, CURRENT_SCORE_COORDS[0], CURRENT_SCORE_COORDS[1])
+  mars.ctx.fillText(highestScore, HIGH_SCORE_COORDS[0], HIGH_SCORE_COORDS[1])
+}
+
+
+</script>
+</body>
+</html>

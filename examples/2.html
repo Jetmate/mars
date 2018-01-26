@@ -1,0 +1,26 @@
+<html>
+<body>
+<script src="../mars.js"></script>
+<script>
+
+let bullets = []
+
+mars.update = function () {
+  for (let coords of bullets) {
+    coords[1] += 1
+  }
+  if (mars.buttons['left']) {
+    bullets.push(mars.mouseCoordinates.slice())
+  }
+}
+
+mars.draw = function () {
+  mars.ctx.fillRect(mars.mouseCoordinates[0], mars.mouseCoordinates[1], 10, 10)
+  for (let coords of bullets) {
+    mars.ctx.fillRect(coords[0], coords[1], 10, 10)
+  }
+}
+
+</script>
+</body>
+</html>
