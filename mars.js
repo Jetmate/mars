@@ -161,9 +161,6 @@ const mars = {}
     mars.buttons[mouseButtons[event.button]] = true
   })
   document.addEventListener('mouseup', event => {
-    mars.buttons[mouseButtons[event.button]] = undefined
-  })
-  document.addEventListener('mouseup', event => {
     mars.buttons = {}
   })
   document.addEventListener('mouseout', event => {
